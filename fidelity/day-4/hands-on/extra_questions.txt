@@ -1,0 +1,56 @@
+We have a Stream<PendingTransaction> pending and Stream<Stream<ProcessedTransaction>> processedTransaction. We have a Reconcile class in which we have reconcile method
+which we will return Stream<PendingTransaction> which are processed .
+ Stream<PendingTransaction> reconcile(Stream<PendingTransaction> pending, Stream<Stream<ProcessedTransaction>> processed) {
+       return null
+        }
+following are the condition 
+1. In any case you must not return null either return empty stream or filtered stream.
+A pending Transaction will be considered processed in following case
+1.Pending object present in     Processed stream.
+2.Object present in processed stream have a same ID as PendingTransaction stream.
+PendingTransaction ID is of long type and ProcessedTransaction is of string type but it can be null but 
+if it will have a value it will always be a numeric value.
+3.ProcessedTransaction will have a variable status of type Optional<String> 
+status value will always be DONE
+
+This is the question which i got yesterday in test I tried using flatmap and filtering out processed ID based on status and mapping string id to long but no test case was passing
+
+public class PendingTransaction {
+    private long id;
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public PendingTransaction(long id) {
+        this.id = id;
+    }
+}
+
+public class ProcessedTransaction {
+    private String id;
+    private Optional<String> status;
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public Optional<String> getStatus() {
+        return status;
+    }
+    public void setStatus(Optional<String> status) {
+        this.status = status;
+    }
+    public ProcessedTransaction(String id, Optional<String> status) {
+        this.id = id;
+        this.status = status;
+    }
+}
+
+Stream<PendingTransaction> reconcile(Stream<PendingTransaction> pending, Stream<Stream<ProcessedTransaction>> processed) {
+           List<ProcessedTransaction>processedTransactionStream = processed.flatMap(o->o).collect(Collectors.toList());
+           List<Long> processedId = processedTransactionStream.stream().filter(o->o.getStatus().get().equalsIgnoreCase("DONE")).map(o->Long.parseLong(o.getId())).collect(Collectors.toList());
+           return pending.filter(o->processedId.contains(o.getId()));
+        }

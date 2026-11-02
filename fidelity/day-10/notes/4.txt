@@ -1,0 +1,253 @@
+HTML Tables 
+-----------
+
+- used to represent the data in a tabular manner that is, information presented in a two-dimensional table comprised of rows and columns of cells containing data.. 
+
+Tables are defined with the <table> tag.
+
+Tables are divided into table rows with the <tr> tag.
+
+Table rows are divided into table data with the <td> tag and table headings with the <th> tag.
+
+The text in <th> elements are bold and centered by default. 
+
+The text in <td> elements are regular and left-aligned by default.
+
+Tables can be divided into 3 sections using:
+
+1) <thead> - Table Header - represents the block of rows that consist of header details of table.
+
+2) <tbody> - Table body - represents a block of rows that consist of contents of table.
+
+3) <tfoot> - Table Footer - represents the block of rows that consist footer data of table.
+
+<caption> tag - to add a caption for a table
+
+
+
+
+Attributes of <table> Tag
+-------------------------
+1) align= left | center | right 
+
+2) bgcolor = "colorname | hex_value"
+
+3) background="image path"
+
+4) border = 0 | 1
+
+5) bordercolor="colorname | hex_value"
+ 
+6) cellpadding=pixels 
+- specifies the space between the cell wall and the cell content
+
+7) cellspacing=pixels 
+- specifies the space between cells 
+
+8) frame =void | above | below | hsides | lhs | rhs | vsides | box | border 
+- specifies which parts of the outside borders that should be visible
+
+9) rules=none | groups | rows | cols | all - specifies which parts of the inside borders that should be visible
+
+10) width = pixels | % 
+
+11) height = pixels
+
+12) summary=text 
+- specifies a summary of the content of a table. The summary attribute has no visual effect in browsers, but can be used by screen readers
+
+
+
+
+Attributes of <th> and <td> - Cell level ---------------------------
+1) align =left | right | center | justify
+
+2) bgcolor="colorname | hex_value"
+
+3) colspan= number 
+- specifies the number of columns a cell should span (merge) horizontally. 
+
+4) rowspan=number 
+- specifies the number of rows to span (merge) vertically
+
+5) background=image
+
+6) valign=top | middle | bottom specifies the vertical alignment of the content in a header cell.
+
+7) width= pixels | % 
+- specifies the width of a cell (column)
+
+
+
+Attributes of <caption>
+-----------------------
+
+1) align= top | left | right | bottom (of the table)
+
+
+
+Empty Cells
+-----------
+<td>&nbsp;</td>
+
+
+
+
+
+
+
+
+Using cellspacing & cellpadding
+
+--------------------------------
+Use Case: Invoice
+
+<table border=1 style="font-size:20px;font-family:verdana;border-collapse:collapse;width:800px" align=center>
+ <caption style=font-size:25px>INVOICE</caption>
+ <thead>
+  <tr>
+   <th colspan="3">Invoice #123456789</th>
+   <th>05 December 2018</th>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <strong>Pay to:</strong><br>
+    Zettamine Labs Pvt Ltd<br>
+    Begumpet<br>
+    Hyderabad, Telangana
+   </td>
+   <td colspan="2">
+    <strong>Customer:</strong><br>
+    Sunil Joseph<br>
+    Mothinagar<br>
+    Hyderabad, India
+   </td>
+  </tr>
+ </thead>
+    
+ <tbody>
+  <tr>
+   <th>Name / Description</th>
+   <th>Qty.</th>
+   <th>@</th>
+   <th>Cost</th>
+  </tr>
+  <tr>
+   <td>HTML/ Java Script</td>
+   <td>1</td>
+   <td>1000</td>
+   <td>1000.00</td>
+  </tr>
+  <tr>
+   <td>Core Java</td>
+   <td>2</td>
+   <td>1500</td>
+   <td>3000.00</td>
+  </tr>
+ </tbody>
+    
+ <tfoot>
+  <tr>
+   <th colspan="3">Subtotal</th>
+   <td align>4000.00</td>
+  </tr>
+  <tr>
+   <th colspan="2">Tax</th>
+   <td> 8% </td>
+   <td>320.00</td>
+  </tr>
+  <tr>
+   <th colspan="3">Grand Total</th>
+   <td>Rs. 4320.00</td>
+  </tr>
+ </tfoot>
+</table>
+
+
+CSS
+<style>
+    table, th, td {
+        border: 1px solid orange;
+    }
+</style>
+
+ <style>
+   table {
+     border-collapse: collapse;
+   }
+   th, td {
+     border: 1px solid orange;
+     padding: 10px;
+   }
+</style>
+
+to apply alternating background colors to the rows of our table:
+
+<style>
+tr:nth-child(even) {
+    background-color: #eee;
+}
+tr:nth-child(odd) {
+    background-color: #fdd;
+}
+</style>
+
+
+<table class="alt">
+
+
+
+
+Images in Table
+----------------
+
+
+<colgroup> Tag
+--------------
+<colgroup> tag represents a group of one or more columns within a table in an HTML document. 
+
+It can be used to apply styles for one or more columns. 
+
+This is useful because it eliminates the need to apply the styles at the individual <td> or <th> level.
+
+The <colgroup> tag must be used as a child of a <table> element, after any <caption> element and before any <thead>, <tbody>, <tfoot>, and <tr> elements.
+
+<col> Tag
+---------
+used to apply properties to a column within a <colgroup>
+
+
+<table border="1" width="85%">
+ <caption>Table with colgroup</caption>
+ <colgroup>
+  <col style="background:red;">
+  <col span="3" style="background:green">
+  <col style="background:orange;">
+ </colgroup>
+<thead>
+
+<tr>
+ <th>Header 1</th>
+ <th>Header 2</th>
+ <th>Header 3</th>
+ <th>Header 4</th>
+ <th>Header 5</th>
+</tr>
+<tr>
+ <td>Cell</td>
+ <td>Cell</td>
+ <td>Cell</td> 
+ <td>Cell</td>
+ <td>Cell</td>
+</tr>
+<tr>
+<td>Cell</td>
+<td>Cell</td>
+<td>Cell</td>
+<td>Cell</td>
+<td>Cell</td>
+</tr>
+</table>
+
+
+

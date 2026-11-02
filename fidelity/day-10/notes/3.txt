@@ -1,0 +1,342 @@
+HTML Lists 
+==========
+- to display any content in a list format 
+
+- There are 3 types of Lists -  ordered, unordered and description lists. 
+
+- An ordered list and unordered list is a list of items.  
+
+- Each list item is defined with the <li> tag.
+
+
+1) Un-Ordered List
+------------------
+<ul> tag is used to define an un-ordered list
+
+Attributes
+----------
+1) type= disc | square | circle | none
+
+An unordered list is a bulleted list, similar to the menu on the right (although the menu has been altered using stylesheets to use images instead of the standard bullets.)
+
+Define Unordered List - <ul> ... </ul>
+    Use the <ul> tags to define the start and end of an unordered list. A number of list items (li elements) will go within the ul tags.
+Unordered List Item - <li> some item </li>
+    Add the text for each item in between some <li> and </li> tags. Each list item must have its own li tags.
+Bullet Type <ul type="disc | circle | square | none">
+    By default a browser will show a round bullet. This can be changed by using the type attribute of the ul tag, which will change the bullet type for the entire list. 
+Item Type <li type="?">
+    You can set the type of bullet for an item in the middle of the list by setting the type attribute of an li tag. 
+
+
+2) Ordered List
+---------------
+<ol> tag is used to define an ordered list 
+
+- an ordered list can be numerical or alphabetical
+
+This list is used to create and indexed list, such as a numbered or alphabetical list.
+
+Define Ordered List - <ol> ... </ol>
+    Use the <ol> tags to set the start and end of the list. A number of list items will then go between the ordered list tags.
+Ordered List Item - <li> an item </li>
+    Each item must use the <li> tags the same as with an unordered list. But this time the browser will number each item automatically, instead of showing bullets.
+List Type <ol type="A | a | I | i | 1">
+    Set the type of list index by using the type="?" attribute. The default style is numeric, and you can also choose from upper or lowercase, alphabetic or roman numerals.
+List Starting Position <ol start="?">
+    Set the starting number (or letter) if you dont want the list to start at 1 or A.
+Item Value <li value="?">
+    You can set the value of an item in the middle of the list manually, if you do not want it to follow the previous letter or number. Simply set the value attribute of the item you wish to change. Note: subsequent items will follow the new value. 
+
+
+
+Attributes
+----------
+1) type= 1 | A | a | I | i | none
+- specifies the kind of marker to use for each list item
+
+2) start = number 
+- specifies the start value of an ordered list
+
+3) reversed 
+- to display the marker in the reversed order
+
+
+
+  <style>
+   ol{
+     font-family:verdana;
+	 font-size:30px;
+	 padding:20px;
+	 padding-left:60px;
+	 width:50%;
+	 background-color:seagreen;
+   }
+   li{
+    background-color:yellow;
+	margin:10px;
+	padding:10px;
+   }
+  </style>
+
+
+
+
+
+
+
+3) Description List
+-------------------
+HTML 4 : Definition List
+HTML 5 : Description List
+
+A description list is a list of terms, with a description of each term.
+
+The <dl> tag defines the description list, the <dt> tag defines the term (name), and the <dd> tag describes each term
+
+
+<dl>
+  <dt>HTML:</dt>
+  <dd>Hyper Text Markup Language. An HTML document contains HTML tags .... </dd>
+
+  <dt>CSS:</dt>
+  <dd>about CSS........</dd>
+</dl>
+
+
+ <dl>
+    <dt>Name:</dt>
+	<dd>Sunil Joseph</dd>
+
+    <dt>Age:</dt>
+	<dd>39</dd>
+
+    <dt>Address:</dt>
+	<dd>Hyderabad</dd>
+  </dl>
+
+dl {
+    margin-bottom:50px;
+}
+ 
+dl dt {
+    background:#5f9be3;
+    color:#fff;
+    float:left;
+    font-weight:bold;
+    margin-right:10px;
+    padding:5px; 
+    width:100px;
+}
+
+dl dd {
+    margin:2px 0;
+    padding:5px 0;
+}
+
+Nested HTML Lists
+-----------------
+
+ <ul>
+  <li>Web Technologies
+    <ul>
+      <li>WAD</li>
+      <li>PHP with MySQL</li>
+    </ul>
+  </li>
+  <li>Databases
+    <ul>
+      <li>Oracle</li>
+      <li>MySQL</li>
+    </ul>      	
+  </li>
+</ul> 
+
+
+
+HTML Images
+-----------
+Images enhance visual appearance of the web pages by making them more appealing and can convey information much better than words. 
+
+The <img> tag is used to insert images in a web page
+
+The <img> tag an empty element and contains attributes only and it is not having any closing tag.
+
+The syntax of the <img> tag can be given with:
+ <img src="url" alt="some_text">
+
+pexels.com
+
+Attributes
+----------
+1) src = URL - to specify the address of an image. 
+Image source URLs can be either local or global
+
+ Global: http://zettamine.co/img/logo.png
+
+ Local:   images/sunset.gif   [relative path](or)
+   file://c:/HTML/images/sunset.gif [absolute path]
+
+
+2) align = bottom | middle | center | top | left | right  
+
+"left" and "right" alignments are only applied to image
+"top" , "bottom", "middle", "center" alignments are applied to the text along with the image
+
+3) width = width of image
+
+4) height = height of image
+
+5) name = reference of image
+
+6) alt = defines alternate text, which may be presented in place of the image 
+-used  to tell the details about the image to search engines. 
+
+7) title = message to be displayed on mouse over on image
+
+8) border = border size for image
+
+9) hspace = horizontal space between the image and other content
+
+10) vspace = vertical space between the image and other content
+
+11) usemap = name of the image map to be applied on the image
+
+
+
+
+
+To provide favicon for page :
+-----------------------------
+<head>
+ <link rel="icon" href="images/logo.gif" type="image/gif"> 
+</head>
+
+
+
+
+
+Practice:
+ photo frame : wallpaper 3d (google)
+
+ #photo_frame{
+   width:280px;
+   height:160px;
+   border:7px solid maroon;
+   border-radius:15px;
+   padding:10px;
+  }
+
+
+
+
+<h4>Image</h4>
+This is some text that appears above the image 
+ <img src="smiley.gif" width="42" height="42" align="middle"> 
+This is some text that appears after the image
+
+Note:
+If the path of the image file is not mentioned it will search for the image in the current directory. 
+
+
+HTML Marquees
+-------------
+An HTML marquee is a scrolling text or image displayed either horizontally or vertically. 
+
+    <marquee>.....</marquee>
+
+Attributes:
+-----------
+1) width
+
+2) height
+
+3) direction ="left | right | up | down"
+      	left -- right to left
+	right -- left to right
+	up -- bottom to top
+	down -- top to bottom
+
+4) behavior="scroll | slide | alternate" 
+  
+ (a) slide -- start and stop as soon as the text touches the margin 
+
+ (b) scroll -- start completely and off one side 
+
+ (c) alternate -- text bounce as soon as it touch both side margin
+
+5) scrolldelay -- specifies the amount in milliseconds between times the marquee redraw. Default value is "85" milliseconds.
+
+6) scrollamount - specifies the amount in pixels the marquee should scroll each time it's redraw. The default value is "6".
+
+7) loop	- specifies how many times to loop. The default value is "infinite"
+ loop=2 : will do the scrolling for 2 times
+
+8) bgcolor - specifies background color
+
+9) hspace 
+10) vspace
+
+
+
+
+
+
+
+
+
+MarqueeTest1.html
+-----------------
+<html>
+<head>
+<title>HTML marquee Tag</title>
+</head>
+<body>
+<marquee>This is basic example of marquee</marquee>
+</body>
+</html>
+
+MarqueeTest2.html
+-----------------
+<html>
+<body>
+<marquee width="50%">This example will take only 50% width</marquee>
+</body>
+</html>
+
+MarqueeTest3.html
+-----------------
+<html>
+<body>
+<marquee direction="right">This text will scroll from left to right</marquee>
+</body>
+</html>
+
+MarqueeTest4.html
+-----------------
+<html>
+<body>
+<marquee direction="up">This text will scroll from bottom to up</marquee>
+</body>
+</html>
+
+MarqueeTest5.html
+-----------------
+<html>
+<head>
+<title>Marquee Example</title>
+</head>
+
+<body bgcolor="#FFBF00">
+
+<font face="verdana" size="6" color="blue">
+
+<marquee width="80%" bgcolor="lightgreen" height="45px" direction="right" behavior="alternate" scrolldelay="250" scrollamount="25" loop="6" hspace="50px"> Nare Technologies welcome you!!</marquee> Web Design & Development
+</font>
+
+</body>
+</html>
+
+
+color names : aliceblue , antiquewhite , aquamarine , beige , bisque , blanchedalmond , blueviolet , brown 
+burlywood , cadetblue , coral , darkkhaki , darksalmon , dodgerblue , gray , lightblue , peru , salmon , etc

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fidelity</groupId>
-	<artifactId>09.sb-crud-app</artifactId>
+	<artifactId>10.sb-crud-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>09.sb-crud-app</name>
+	<name>10.sb-crud-app</name>
 	<description>ReST using Spring Boot</description>
 	<url/>
 	<licenses>

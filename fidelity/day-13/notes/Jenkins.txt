@@ -1,0 +1,614 @@
+========= Jenkins ======
+
+1. What is Build & Deployment Process of a Project		
+2. Application Environments in Real-Time
+3. Challenges in Manual Build & Deployments			
+4. What is CI CD & Why we need to go for CICD?
+5. Jenkins Introduction - What, Why	
+6. Jenkins Setup		
+7. Jenkins Job Creation		
+8. Job Scheduling
+
+==========================
+Build & Deployment Process
+==========================
+Development Team - writes the source code of the Project  - Code Repository
+
+1) Take latest source code from the GitHub		
+2) Compile Project source code 	
+3) Execute Unit Test Cases
+4) Perform Code Review using SonarQube		
+5) Package the application (jar/war)  
+6) Upload Build Artifact in Nexus 	
+7) Deploy the Application in Server
+
+DevOps is a process/culture that IT companies are following now a days to develop and deliver the project to clients with high quality.	
+
+Development Team -> responsible for project development (coding)
+Testing Team -> responsible for project functionality testing (verification & validations)
+
+Operations Team -> Responsible for Build & Deployment process 
+
+DevOps is a process which is used to collaborate development team work & operations team work. 
+Using DevOps process we can simplify application Build & Deployment process
+
+=== Challenges in Manual Process ===
+
+> Every day we need to deploy latest code	
+> Deploy code in multiple environments	
+> Takes lot of time
+> Repeated work	
+> Error Prone	
+	
+ ---- to overcome the above challenges we use Jenkins
+
+CI/CD    Continuous Integration   Continuous Delivery/ Continuous Deployment
+
+- when I make some code changes in GitHub repository, immediately it should be deployed
+- CI/CD is one of the trending approach in software development
+- CI/CD is used to simplify and automate build & project deployment & delivery process
+
+Continuous Integration -> when code changes happen - it should be ready to be  tested
+Continuous Delivery - Keep it ready to release (in Nexus Repository - war/ jar file)
+Continuous Deployment - Deploy the Project to Product (after getting approval from client)
+
+GitHub Repo URL   -- AWS Virtual Machine (EC2 Instance) - Tomcat
+
+Manual Deployment:	
+1. Download Code from GitRepo	
+2. Create war / jar file (mvn clean package)
+3. Upload war file into tomcat server (deployment)
+
+Automation
+Git Repo --- Jenkins Server (EC2 Instance + Jenkins Install)   --- Apache Server
+
+
+
+==================
+Jenkins in Windows
+==================
+
+1: Install Java 17  -- new version of Jenkins should have Java 21+
+  > java -version
+
+2. Download & Install Jenkins
+https://www.jenkins.io/download/    and select the Windows LTS .msi installer
+
+=== https://get.jenkins.io/war-stable/            ----> for Java 21           
+=== https://get.jenkins.io/war-stable/2.528.3/    ----> for Java 17
+
+3: Unlock Jenkins
+
+> Open your web browser and go to: http://localhost:8080
+
+> Find the initial administrator password located in the file path shown on your screen (typically inside C:\Program Data\Jenkins\.jenkins\secrets\initialAdminPassword) OR  C:\Users\{USER_NAME}\.jenkins\secrets\initialAdminPassword
+
+User Name: admin
+
+> Copy the password, paste it into the browser window, and click Continue
+
+> Choose "Install suggested plugins" and finish creating your first admin user account
+
+User Name: sunilj
+Password Apxxx@xxx0
+
+Jenkins URL: http://localhost:8080
+
+--> This account we are creating is going to act as a admin
+
+> Save and Run
+> Start using Jenkins
+
+--> With this our Jenkins setup is completed. We are able to login into Jenkins dashboard
+
+
+
+
+============================
+Jenkins Job Creation Process
+============================
+
+1. Login to Jenkins  - http://localhost:8080
+User Name: sunilj
+Paswword : xxxxxx
+
+2. Create a Job +
+ Enter an item name:  myproj-job-1 [pipeline-1]
+ Pipeline   -- script will be available   [ Freestyle - GUI will be available]
+ > OK
+
+==> Jenkin Pipeline creation is started
+
+Description: This is my first Jenkins Pipeline
+
+Note: Jenkins Pipeline can be created in 2 ways
+ 1. using declarative pipeline approach -- plain English
+ 2. using scripted pipeline approach -- Pure Groovy
+
+Script: [select Hello World]
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+
+
+> Apply  > Save
+
+
+---> This is a Dummy Pipeline
+
+
+
+agent any --> we take a machine to run this; if that machine crashes - here we have Jenkins Cluster will be available - Master-Slave approaches  - in which machine we need to execute pipeline
+
+### To execute the Pipeline 
+Go to Jenkins Dashboard >  Click on your Pipeline > Click on "Build Now" from the side bar
+
+
+### To see the result of Build Now
+  Click on the corresponding Build > Console Output  
+
+
+
+
+
+=======================================
+Pipeline = series of steps [
+1. take code from GitHub 
+2. Compile code by Maven 
+3. Package using Maven
+4. Create Docker Image
+5. Create Docker Container
+
+> Go to Dashboard - we can see the Pipeline Created
+
+
+==========================
+==> Create a Real Pipeline   - PPT - 4
+==========================
+
+--> Create a Pipeline with 4 Stages
+
+Create a CI/CD Pipeline for the following setup
+  1. Get project from GitHub
+  2. Communicate with Maven to Build that Project
+  3. Communicate with Docker to build the Image
+  4. Execute the Image and Create Container
+
+
+Pipeline contains set of stages - 4 stages here
+
+pipeline {
+    agent any
+
+    stages {
+        stage('git clone') {
+            steps {
+                git 'url'
+            }
+        }
+        stage('mvn build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('docker image') {
+            steps {
+                sh 'docker build -t img .'
+            }
+        }
+        stage('deployment') {
+            steps {
+                sh 'docker run -d -p 9090:8080 img'
+            }
+        }
+    }
+}
+
+
+
+Refer: Jenkins Backup & Restore  --> thin backup plugin in Jenkins
+
+
+Description: this is used to build and deploy java web application using git+maven+docker
+
+
+Refer: Pipeline Syntax link in next tab  -- Sample Step : git: Git
+
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Git clone') {
+            steps {
+                git 'url'    <--- prepare it using "Pipeline Syntax"
+            }
+        }
+
+}
+
+-- Build Now and check in Console
+-- Try for Stage View
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Git clone') {
+            steps {
+                git 'url'    <--- prepare it using "Pipeline Syntax"
+            }
+        }
+        stage('mvn build') {
+            steps {
+                bat 'mvn clean compile'        //sh 'mvn clean package'
+            }
+        }
+}
+
+-- Build Now and check in Console
+Error comes -- find the reason from Console
+
+Solution:
+ ==> Install Maven as a Plugin or as a Tool
+  Manage Jenkins > Tools > Maven Installation> maven Installations + Add Maven
+  Name: M3
+  Version: xxxx
+  > Apply & Save
+
+
+Add Maven as a tool in Pipeline Script
+
+pipeline {
+    agent any
+
+    tools {			<======
+      maven 'M3'
+    }
+ 
+    stages {
+       .......
+  ----
+
+
+---> Build Now	--- Console View
+
+
+
+	stage('Docker Image') {
+            steps {
+                sh 'docker build -t sunil-app .'      ---- bat for windows
+            }
+        }
+
+---> Build Now     
+---> Docker stage fails as Docker is not available
+
+Refer:  Setup Docker in Jenkins
+
+
+
+#### To Restart Jenkins ####
+ http://localhost:8080/restart
+
+
+
+-- Stage to create Docker Container
+
+	stage('Deployment') {
+            steps {
+                sh 'docker run -d -p 9090:8080 sunil-app --name mysbcontainer'
+            }
+        }
+
+8080 - container port
+
+
+---> Job > Configure > Build Triggers (when you want to run the Job) 
+
+Build periodically 
+   Schedule: * * * * *    --- every 1 minute job will execute
+
+***** - Crone schedule
+
+
+Poll SCM  
+  Schedule: *****  --- every 1 minute it will communicate with GitHub
+
+make some commits in GitHub
+
+
+
+
+---- Install Jenkins in EC2 -----
+# Jenkins Server Setup in Linux VM #
+
+## Step - 1 : Create Linux VM ##
+
+1) Create Ubuntu VM using AWS EC2 (t2.medium) <br/>
+2) Enable 8080 Port Number in Security Group Inbound Rules
+3) Connect to VM using MobaXter/ PuTTY / SSH
+
+## Step-2 : Instal Java ##
+
+```
+sudo apt update
+sudo apt install fontconfig openjdk-17-jre
+java -version
+```
+
+## Step-3 : Install Jenkins ##
+```
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+```
+
+## Step-4 : Start Jenkins ## 
+
+```
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+```
+
+## Step-5 : Verify Jenkins ##
+
+```
+sudo systemctl status jenkins
+```
+	
+## Step-6 : Open jenkins server in browser using VM public ip ##
+
+```
+http://public-ip:8080/
+```
+
+## Step-7 : Copy jenkins admin pwd ##
+```
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+	   
+## Step-8 : Create Admin Account & Install Required Plugins in Jenkins ##
+
+
+## Step-2 : Configure Maven as Global Tool in Jenkins ##
+
+1) Manage Jenkins -> Tools -> Maven Installation -> Add maven <br/>
+
+## Step-3 : Setup Docker in Jenkins ##
+```
+curl -fsSL get.docker.com | /bin/bash
+sudo usermod -aG docker jenkins
+sudo usermod -aG docker ubuntu
+sudo systemctl restart jenkins
+sudo docker version
+```
+
+# Step - 4 : Create Jenkins Job #
+
+- **Stage-1 : Clone Git Repo** <br/> 
+- **Stage-2 : Maven Build** <br/>
+- **Stage-3 : Create Docker Image** <br/>
+- **Stage-4 : Create Docker Container** <br/>
+	
+# Step - 5 : Trigger Jenkins Job #
+
+# Step - 6 : Enable host port in security group inbound rules #
+
+# Step - 7 : Access Application in Browser #
+
+- **We should be able to access our application** <br/>
+
+URL : http://public-ip:port/
+	
+# We are done with our Setup #
+	
+## Step - 8 : After your practise, delete resources we have used in AWS Cloud to avoid billing ##
+
+
+
+
+
+===  Jenkins Job Creation Process ====
+
+1. Login to Jenkins
+
+2. Configure Maven in Global Tool Configuration
+
+Manage Jenkins > Global Tool Configuration - Add Maven - Install Maven (Jenkins will download Maven Install from Apache)	
+
+Git Software will be available by default with Jenkins Global Tools Configuration
+
+3. Integration between Jenkins & Tomcat
+Install plugin called "Deploy to Container" - to deploy war file to Tomcat Server
+
+Manage Jenkins > Manage Plugins > Go to Available Tabs > Search for "Deploy to Container" > Click on "Install without Restart"
+
+4. Create Job		+ New Item -> Enter an Item Name: my_first_job -> Free Style Project > Ok
+Configuration	 > General	
+ > Source Code Management - Git Repository URL:    Credentials:   Branch Specifier: */master
+ > Build Triggers - when to execute the build  build periodically - Poll SCM     Schedule: *****
+ > Build Environment - delete the workspace before the build starts
+ > Build Steps - how to create the build - Add build step: Invoke top-level maven targets (maven goals) 
+				Maven Version: 3.8.6	Goals : clean package
+ > Post Build Actions – Deployment	Add Post Build Action: Deploy war/ear to a container		
+WAR/EAR files: target/*.war		Context Path : maven-web-app  (application name)
+		Containers : Tomcat 10.1.x	Tomcat Credentials: 	Tomcat URL: 
+
+5. Run the Job
+Click "my_first_job" from Dashboard - Click on Build Now	-- Console Output
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+        stage('docker image') {
+            steps {
+                sh 'docker build -t img .'
+            }
+        }
+        stage('deployment') {
+            steps {
+                sh 'docker run -d -p 9090:8080 img'
+            }
+        }
+    }
+}
+
+
+
+
+pipeline {
+    agent any
+
+    environment {
+        // Define your configuration variables here
+        REGISTRY_CREDS   = 'dockerhub_login' // The ID of your credentials stored in Jenkins
+        IMAGE_NAME       = 'myapp/springboot-app'
+        IMAGE_TAG        = "${BUILD_NUMBER}"
+        CONTAINER_NAME   = 'springboot-app-container'
+        APP_PORT         = '8080'
+    }
+
+    tools {
+        // Matches the name defined in Manage Jenkins -> Tools
+        maven 'M3' 
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning Spring Boot application from GitHub...'
+                // Cleans the workspace and checks out the repository defined in the Jenkins job configuration
+                checkout scm
+            }
+        }
+
+        stage('Maven Build') {
+            steps {
+                echo 'Cleaning, compiling, and packaging the application...'
+                // Runs unit tests and builds the executable .jar file inside the target/ folder
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo "Building Docker image: ${IMAGE_NAME}:${IMAGE_TAG}..."
+                // Builds the image using the Dockerfile located in the root directory
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                echo 'Deploying application to Docker container...'
+                
+                // 1. Stop and remove the existing container if it is already running
+                sh """
+                    if [ \$(docker ps -aq -f name=^${CONTAINER_NAME}\$) ]; then
+                        echo "Stopping and removing existing container..."
+                        docker stop ${CONTAINER_NAME}
+                        docker rm ${CONTAINER_NAME}
+                    fi
+                """
+                
+                // 2. Start the new container with the newly built image
+                sh "docker run -d -p ${APP_PORT}:${APP_PORT} --name ${CONTAINER_NAME} ${IMAGE_NAME}:${IMAGE_TAG}"
+                
+                echo "Application successfully deployed and running on port ${APP_PORT}!"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed. Review the logs above to troubleshoot."
+        }
+    }
+}
+
+
+Accompanying Dockerfile
+
+# Step 1: Use a lightweight JRE base image
+FROM eclipse-temurin:17-jre-alpine
+
+# Step 2: Set the working directory inside the container
+WORKDIR /app
+
+# Step 3: Copy the packaged jar from the Jenkins workspace target folder
+COPY target/*.jar app.jar
+
+# Step 4: Expose the port your Spring Boot app runs on
+EXPOSE 8080
+
+# Step 5: Execute the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+
+
+
+
+
+
+
+
+
+2. Configure Maven in Global Tool Configuration
+
+Manage Jenkins > Global Tool Configuration - Add Maven - Install Maven (Jenkins will download Maven Install from Apache)	
+
+Git Software will be available by default with Jenkins Global Tools Configuration
+
+3. Integration between Jenkins & Tomcat
+Install plugin called "Deploy to Container" - to deploy war file to Tomcat Server
+
+Manage Jenkins > Manage Plugins > Go to Available Tabs > Search for "Deploy to Container" > Click on "Install without Restart"
+
+4. Create Job		+ New Item -> Enter an Item Name: my_first_job -> Free Style Project > Ok
+Configuration	 > General	
+ > Source Code Management - Git Repository URL:    Credentials:   Branch Specifier: */master
+ > Build Triggers - when to execute the build  build periodically - Poll SCM     Schedule: *****
+ > Build Environment - delete the workspace before the build starts
+ > Build Steps - how to create the build - Add build step: Invoke top-level maven targets (maven goals) 
+				Maven Version: 3.8.6	Goals : clean package
+ > Post Build Actions – Deployment	Add Post Build Action: Deploy war/ear to a container		
+WAR/EAR files: target/*.war		Context Path : maven-web-app  (application name)
+		Containers : Tomcat 10.1.x	Tomcat Credentials: 	Tomcat URL: 
+
+5. Run the Job
+Click "my_first_job" from Dashboard - Click on Build Now	-- Console Output
+
+
+
+
+

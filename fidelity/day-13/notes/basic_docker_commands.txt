@@ -1,0 +1,232 @@
+What is Docker?
+ Docker is an open-source platform for developing, shipping and running applications in containers
+ Ensures consistency across environments 
+
+Why use Docker?
+ Eliminates "it works on my machine" issues.
+ Improves resource efficiency
+ Enables fast deployment and scalability
+ Environment Standardization
+ Build Once and Deploy Anywhere
+
+
+
+How does Traditional Deployment work?
+
+-> Deployment process described in a document
+-> Operations team follows steps to:
+	Setup Hardware
+	Setup OS (Linux, Windows, Mac, ...)
+	Install Software (Java, Python, NodeJs, ...)
+	Setup Application Dependencies
+	Install Application
+
+Manual approach:
+	Takes a lot of time
+	High chance of making mistakes
+
+What is  Docker?
+
+- Docker is a Containerization Software
+- Docker is a platform to run our application easily
+- Docker is a platform for packaging, deploying and running application
+- Docker enables you to separate your application from your infrastructure so you can deliver software quickly
+- Docker will take care of all the dependencies required to run our application
+- We will give instructions to Docker Software using Dockerfile
+- Using Dockerfile we will build docker image
+- Docker image contains application code + application dependencies
+- We can run docker image on any machine
+- When we run Docker image it creates Docker Container
+- Docker container is called as Runtime instance of Docker Image
+- Our application will be executed inside the container
+- Docker is a computer program that performs operating system level virtualization, also known as "containerization". 
+- It was first released in 2013 and is developed by Docker Ic
+- Docker is used to run software packages called "containers"
+
+Docker is a tool designed to make it easier to build , deploy and run applications by using containers
+Build ---> Ship  ----> Run
+
+================================
+Understanding Docker Terminology
+================================
+
+1. Docker Image: A package representing specific version of your application (or software)
+Contains everything your app needs - software, code, dependencies
+2. Docker Registry: A place to store your docker images
+3. Docker Hub: A registry to host Docker images
+4. Docker Repository: Docker images for a specific app (tags are used to differentiate different images)
+5. Docker Container: Runtime instance of a docker image
+6. Dockerfile: File with instructions to create a Docker image
+
+
+
+
+===============
+Docker Commands
+===============
+
+
+docker -v
+docker --version
+docker info
+
+docker images
+docker ps        --- to show running containers
+docker ps -a     --- to show running and stopped containers
+
+
+-- hub.docker.com  -- search hello world
+
+docker pull hello-world
+
+docker run hello-world:latest
+
+docker ps -a
+
+
+--- hub.docker.com   --- search "getting-started" --- official image -- https://hub.docker.com/r/docker/getting-started
+
+docker pull docker/getting-started
+docker images
+
+
+docker run -p 8080:80 docker/getting-started
+
+docker run -d --name my-docker-container -p 8081:80 docker/getting-started
+
+docker ps
+
+docker stop <container_id>  -- need to provide only the starting 4-5 characters of container ID
+
+docker rm <container_id>  --- to remove the stopped containers
+
+docker rmi <image_name/ image_id>  -- to remove docker image where no containers are present
+
+
+
+=====================================
+Generate Docker Images - 3 approaches
+=====================================
+1) Dockerfile
+2) Buildpacks    mvn goal: spring-boot:build-image
+3) Google Jib	
+
+
+======================================
+Dockerize Your Spring Boot Application
+======================================
+
+1. Create your spring boot application
+2. Package your application using mvn (maven build tool)
+3. Create Dockerfile
+4. Create Docker Image
+5. Push Docker Image to Docker Hub
+6. Pull Docker Image
+7. Create Docker Container
+
+
+--> provide package name in pom.xml as follows
+	<build>
+	    <finalName>sb-lms-app</finalName>    <==========
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths> 
+
+
+--> package the application
+
+  Right Click on Project in STS > Run As > Maven build...
+      Goals: clean compile package
+		> Run
+
+   --- if everything is fine; then Maven creates "sb-lms-app.jar" in /target folder
+
+
+--> Create new file with name "Dockerfile" in the project folder with following contents
+
+# start with a base image containing Java runtime
+FROM openjdk:17-ea-slim-buster
+
+# add the application's jar to the image
+COPY target/sb-lms-app.jar lms-app.jar
+
+# execute the application
+ENTRYPOINT ["java", "-jar", "lms-app.jar"]   
+#whenever someone is trying to generate a container from my docker image 
+# - please execute - java -jar lms-app.jar command
+
+
+
+-->  create a docker image
+
+cmd> docker build -t lms-docker:1.0 .
+
+- with this command we are telling to docker server - there is a Dockerfile inside this folder (. - current folder) - please use the instructions and generate a docker image with the name specified
+1.0 is the version (tag)
+
+
+
+--> testing
+cmd>docker images       cmd>docker image ls       cmd>docker image list
+
+
+cmd> docker inspect image <image_id>   --> -- to know whether the docker image is created successfully based on the instructions in Dockerfile
+
+
+
+--> to run the above image or to create a container
+
+cmd>docker run -d -p 9090:8080 lms-docker:1.0
+
+ -p port mapping
+ 9090:8080 --- what we are telling to the docker server is -  my "docker container" is going to start in the port 8080 (second)
+ where as with the first port we are telling to the docker - please expose the  container outside of the docker network at the port 9090; anyone wants to communicate with this container from outside of the docker network , they have to use the first port number in port mapping
+
+
+cmd> docker ps 
+cmd> docker ps -a    ---> all containers included killed ones
+
+
+---> stop the container
+cmd>docker stop <container_id 4-5chars..>
+
+---> to restart the container
+cmd>docker start <stopped_container_id>
+
+
+===================================================
+Pushing and Pulling Docker Image to/from Docker Hub
+===================================================
+
+cmd> docker tag lms-docker:1.0 150478/lms-app
+
+- Docker Hub is a Service provided by Docker for finding and sharing  your container images with your teams or with the general public	
+https://hub.docker.com  & login
+
+In Command Prompt:
+
+cmd> docker login
+username: xxxxx
+password: xxxxx
+
+
+cmd> docker image ls
+
+cmd>docker push <image_name_with_tag>
+
+cmd> docker pull 150478/sb-docker-app:1.0.1
+
+
+docker pull 150478/lms-docker:latest
+
+
+
+
+
+
+
+
+
